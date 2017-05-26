@@ -1,8 +1,8 @@
 <?php
 	include_once("db_util.php"); 
-	include(__DIR__ ."/../model/user.php"); 
+	include(__DIR__ ."/../model/signup_user.php"); 
 
-	class db_user {
+	class db_signup_user {
 		var $conn;
 		
 		function __construct() {		
@@ -25,7 +25,7 @@
 			return $user;
 		}
 		
-		function add_user($new_username, $new_email, $new_password) {
+		function add_signup_user($new_username, $new_ktp_number, $new_user_photo, $new_ktp_photo) {
 			$sql = 'INSERT INTO user VALUES ("'.$new_username.'", "'.$new_email.'", MD5("'.$new_password.'"))';
 			
 			if ($this->conn->query($sql) === TRUE) {
