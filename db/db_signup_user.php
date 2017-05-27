@@ -10,23 +10,23 @@
 			$this->conn = $db_util->get_connection();	
 		}
 		
-		function get_user($username, $password) {
-			$sql = 'SELECT * FROM user WHERE username="'.$username.'" AND password=MD5("'.$password.'")';
+		function get_signup_user($username) {
+			$sql = 'SELECT * FROM signup_user WHERE username="'.$username.'"';
 			
 			$result = $this->conn->query($sql);
 			
 			if ($result->num_rows != 0) {
 				$row = $result->fetch_assoc();
-				$user = new user($row["username"], $row["email"], $row["password"]);
+				$signup_user = new signup_user($row["username"], $row["ktp_number"], $row["user_photo"], $row["ktp_photo"]);
 			} else {
-				$user = null;
+				$signup_user = null;
 			}
 			
-			return $user;
+			return $signup_user;
 		}
 		
 		function add_signup_user($new_username, $new_ktp_number, $new_user_photo, $new_ktp_photo) {
-			$sql = 'INSERT INTO user VALUES ("'.$new_username.'", "'.$new_email.'", MD5("'.$new_password.'"))';
+			$sql = 'INSERT INTO signup_user VALUES ("'.$new_username.'", "'.$new_ktp_number.'", "'.$new_user_photo.'", "'.$new_ktp_photo.'")';
 			
 			if ($this->conn->query($sql) === TRUE) {
 				return "Success";

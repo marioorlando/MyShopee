@@ -10,23 +10,40 @@
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 
+	<?php
+		include("db\db_signup_user.php");
+		session_start();
+		
+		// Check had been login or not
+		if (!isset($_SESSION["username"])) {
+			header('Location: login.php');
+		}
+		
+		// Check had been signup or not
+		$db_signup_user = new db_signup_user;
+		$signup_user = $db_signup_user->get_signup_user($_SESSION["username"]);
+		if ($signup_user != null) {
+			header('Location: signup_complete.php');
+		}
+	?>
+	
 	<body>
 		<div class="container">
 		  <div class="row" style="margin-top:20px">
 			<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-			  <form name="form_register" id="form_register" method="post" role="form" autocomplete="off">
+			  <form name="form_signup" id="form_signup" method="post" role="form" enctype="multipart/form-data" autocomplete="off">
 				<fieldset>
 				  <h2 align="center">MyShopee - Signup</h2>
 				  <hr></hr>
-				  <input class="form-control" type="hidden" name="action" id="action" value="registration" />
+				  <input class="form-control" type="hidden" name="action" id="action" value="signup" />
 				  <div class="form-group">
 					<input name="ktp_number" type="text" id="ktp_number" class="form-control input-lg" placeholder="KTP Number" pattern="[0-9]{16}" required />
 				  </div>
 				  <div class="form-group">
-					<input name="user_photo" type="file" id="user_photo" class="filestyle" data-icon="false" data-size="lg" data-placeholder="User Photo">
+					<input name="user_photo" type="file" id="user_photo" class="filestyle" data-icon="false" data-size="lg" data-placeholder="User Photo" required />
 				  </div>
 				  <div class="form-group">
-					<input name="ktp_photo" type="file" id="ktp_photo" class="filestyle" data-icon="false" data-size="lg" data-placeholder="KTP Photo">
+					<input name="ktp_photo" type="file" id="ktp_photo" class="filestyle" data-icon="false" data-size="lg" data-placeholder="KTP Photo" required />
 				  </div>
 				  <div class="form-group">
 					 <input type="submit" name="Submit" value="Signup" class="btn btn-lg btn-primary btn-block" style="background-color: #fe5722; border-color: #fe5722;" />
@@ -56,16 +73,33 @@
 	}
 	
 	// On submit ================
-	document.getElementById("form_register").onsubmit = function() {
-	   var serializedData = $('form[name="form_register"]').serialize();
-		   
+	document.getElementById("form_signup").onsubmit = function() {
 	   $.ajax({
 			type: "POST",
-			url: "controller/user_management.php",
-			data: serializedData,
+			url: "controller/signup_management.php",
+			data: new FormData($('form[name="form_signup"]')[0]),
+			cache: false,
+			contentType: false,
+			processData: false,
+			// Custom XMLHttpRequest
+			xhr: function() {
+				var myXhr = $.ajaxSettings.xhr();
+				if (myXhr.upload) {
+					// For handling the progress of the upload
+					myXhr.upload.addEventListener('progress', function(e) {
+						if (e.lengthComputable) {
+							$('progress').attr({
+								value: e.loaded,
+								max: e.total,
+							});
+						}
+					} , false);
+				}
+				return myXhr;
+			},
 			success: function(response) {
 				if (response == "Success") {
-					window.location = "signup.php";
+					window.location = "signup_complete.php";
 				} else {
 					alert(response);
 				}

@@ -12,6 +12,10 @@
 	   {
 			$user = $db_user->get_user($_POST["username"], $_POST["password"]);
 			if ($user != null) {
+				// Start session
+				session_start();
+				$_SESSION["username"] = $_POST["username"];
+				
 				echo "Success";
 			} else {
 				echo "Username / password salah.";
@@ -28,12 +32,20 @@
 			&& (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))
 			&& (strlen($_POST["password"]) >= 8 && strlen($_POST["password"]) <= 16))
 	   {
-			$user = $db_user->get_user($_POST["username"]);
+			$user = $db_user->check_user($_POST["username"]);
 			if ($user != null) {
 				echo "Username " . $_POST["username"] . " telah digunakan.";
 			} else {
 				$result = $db_user->add_user($_POST["username"], $_POST["email"], $_POST["password"]);
-				echo $result;
+				if ($result == "Success") {
+					// Start session
+					session_start();
+					$_SESSION["username"] = $_POST["username"];
+					
+					echo "Success";
+				} else {
+					echo $result;
+				}
 			}
 	   } else {
 		   echo "Pemrosesan gagal, silahkan coba beberapa saat lagi.";

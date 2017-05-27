@@ -29,7 +29,7 @@
 						<input type="submit" name="Submit" value="Login" class="btn btn-lg btn-primary btn-block" style="background-color: #fe5722; border-color: #fe5722;">
 				  </div>
 				  <div class="form-group">
-						<a href="" class="btn btn-lg btn-primary btn-block" style="background-color: #fe5722; border-color: #fe5722;">Gabung Sekarang</a>
+						<a href="register.php" class="btn btn-lg btn-primary btn-block" style="background-color: #fe5722; border-color: #fe5722;">Gabung Sekarang</a>
 				  </div>
 				  </div>
 				</fieldset>
