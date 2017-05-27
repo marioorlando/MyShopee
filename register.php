@@ -16,7 +16,7 @@
 			<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 			  <form name="form_register" id="form_register" method="post" role="form" autocomplete="off">
 				<fieldset>
-				  <h2 align="center">MyShopee - Registration</h2>
+				  <h2 align="center">Registrasi Baru</h2>
 				  <hr></hr>
 				  <input class="form-control" type="hidden" name="action" id="action" value="registration" />
 				  <div class="form-group">
